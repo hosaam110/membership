@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحديث العضوية</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>تحديث العضوية</h1>
+        <form id="updateForm">
+            <input type="text" id="nationalId" placeholder="رقم الهوية" required>
+            <input type="date" id="birthDate" placeholder="تاريخ الميلاد" required>
+            <button type="submit">بحث</button>
+            <button onclick="window.location.href='../index.html'">العودة إلى الصفحة الرئيسية</button>
+        </form>
+    </div>
+
+    <script src="../js/scripts.js"></script>
+    <script>
+        document.getElementById('updateForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Simulate search logic
+            let nationalId = document.getElementById('nationalId').value;
+            let birthDate = document.getElementById('birthDate').value;
+            let resultDiv = document.getElementById('updateResult');
+
+            // Replace with actual search logic
+            if (nationalId === '1234' && birthDate === '2000-01-01') {
+                resultDiv.innerHTML = `
+                    <p>معلومات العضوية:</p>
+                    <form id="updateMembershipForm">
+                        <label for="name">الاسم:</label>
+                        <input type="text" id="name" value="محمد أحمد">
+                        <!-- Add other fields as needed -->
+                        <button type="submit">تحديث</button>
+                    </form>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <p>لم يتم العثور على العضوية</p>
+                `;
+            }
+        });
+
+        document.addEventListener('submit', function(event) {
+            if (event.target.id === 'updateMembershipForm') {
+                event.preventDefault();
+                // Simulate update logic
+                alert('Membership updated...');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة العضوية</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script>
+        async function checkId() {
+            const nationalId = document.getElementById('nationalId').value;
+            const response = await fetch(`http://localhost:5000/check_id?nationalId=${nationalId}`);
+            const result = await response.json();
+            if (result.message === "Membership exists") {
+                window.location.href = 'membership_exists.html';
+            } else {
+                document.getElementById('registrationForm').style.display = 'block';
+            }
+        }
+
+        function validateFullNameAr() {
+            const fullNameAr = document.getElementById('fullNameAr').value;
+            const fullNameArError = document.getElementById('fullNameArError');
+            const names = fullNameAr.trim().split(/\s+/);
+
+            if (names.length !== 4) {
+                fullNameArError.style.display = 'block';
+                return false;
+            } else {
+                fullNameArError.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateFullNameEn() {
+            const fullNameEn = document.getElementById('fullNameEn').value;
+            const fullNameEnError = document.getElementById('fullNameEnError');
+            const names = fullNameEn.trim().split(/\s+/);
+
+            if (names.length !== 4) {
+                fullNameEnError.style.display = 'block';
+                return false;
+            } else {
+                fullNameEnError.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validatePhoneNumber(inputId, errorId) {
+            const phoneNumber = document.getElementById(inputId).value;
+            const phoneNumberError = document.getElementById(errorId);
+            const phoneRegex = /^[0-9]+$/;
+
+            if (!phoneRegex.length(phoneNumber)) {
+                phoneNumberError.style.display = 'block';
+                return false;
+            } else {
+                phoneNumberError.style.display = 'none';
+                return true;
+            }
+        }
+
+        async function register() {
+            const nationalId = document.getElementById('nationalId').value;
+            const isStudent = document.getElementById('isStudent').value;
+            const fullNameAr = document.getElementById('fullNameAr').value;
+            const fullNameEn = document.getElementById('fullNameEn').value;
+            const birthDate = document.getElementById('birthDate').value;
+            const gender = document.getElementById('gender').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const whatsappNumber = document.getElementById('whatsappNumber').value;
+            const residenceLocation = document.getElementById('residenceLocation').value;
+            const email = document.getElementById('email').value;
+            const universityName = document.getElementById('universityName').value;
+            const universityMajor = document.getElementById('universityMajor').value;
+            const universityLevel = document.getElementById('universityLevel').value;
+            const orangeSlip = document.getElementById('orangeSlip').files[0];
+            const frontId = document.getElementById('frontId').files[0];
+            const backId = document.getElementById('backId').files[0];
+            const declaration = document.getElementById('declaration').value;
+
+            const isFullNameArValid = validateFullNameAr();
+            const isFullNameEnValid = validateFullNameEn();
+            const isPhoneNumberValid = validatePhoneNumber('phoneNumber', 'phoneNumberError');
+            const isWhatsappNumberValid = validatePhoneNumber('whatsappNumber', 'whatsappNumberError');
+
+            if (!nationalId || !isStudent || !fullNameAr || !fullNameEn || !birthDate || !gender || !phoneNumber || !whatsappNumber || !residenceLocation || !email || !universityName || !universityMajor || !universityLevel || !orangeSlip || !frontId || !backId || !declaration) {
+                alert("يرجى تعبئة جميع الحقول المطلوبة");
+                return;
+            }
+
+            if (!isFullNameArValid || !isFullNameEnValid || !isPhoneNumberValid || !isWhatsappNumberValid) {
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('nationalId', nationalId);
+            formData.append('isStudent', isStudent);
+            formData.append('fullNameAr', fullNameAr);
+            formData.append('fullNameEn', fullNameEn);
+            formData.append('birthDate', birthDate);
+            formData.append('gender', gender);
+            formData.append('phoneNumber', phoneNumber);
+            formData.append('whatsappNumber', whatsappNumber);
+            formData.append('residenceLocation', residenceLocation);
+            formData.append('email', email);
+            formData.append('universityName', universityName);
+            formData.append('universityMajor', universityMajor);
+            formData.append('universityLevel', universityLevel);
+            formData.append('orangeSlip', orangeSlip);
+            formData.append('frontId', frontId);
+            formData.append('backId', backId);
+            formData.append('declaration', declaration);
+
+            const response = await fetch('http://localhost:5000/register', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                window.location.href = `registration_success.html?membership_number=${result.temp_membership_number}`;
+            } else {
+                alert('حدث خطأ أثناء التسجيل');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <h1>إدارة العضوية</h1>
+        <input type="text" id="nationalId" placeholder="رقم الهوية">
+        <button onclick="checkId()">تحقق من رقم الهوية</button>
+        <button onclick="window.location.href='../index.html'">العودة إلى الصفحة الرئيسية</button>
+        
+        <div id="registrationForm" style="display:none;">
+            <h2>تسجيل عضوية جديدة</h2>
+            <label for="isStudent">هل انت طالب في إسطنبول:</label>
+            <select id="isStudent">
+                <option value="نعم">نعم</option>
+                <option value="لا">لا</option>
+            </select>
+            <br>
+            <label>الاسم الرباعي باللغة العربية:</label>
+            <input type="text" id="fullNameAr" placeholder="الاسم الرباعي باللغة العربية" onblur="validateFullNameAr()">
+            <small id="fullNameArError" class="error">يرجى إدخال الاسم الرباعي بالعربية.</small>
+            <label>الاسم الرباعي باللغة الإنجليزية:</label>
+            <input type="text" id="fullNameEn" placeholder="الاسم الرباعي بالغة الإنجليزية" onblur="validateFullNameEn()">
+            <small id="fullNameEnError" class="error">يرجى إدخال الاسم الرباعي بالإنجليزية.</small>
+            <label>تاريخ الميلاد:</label>
+            <input type="date" id="birthDate" placeholder="تاريخ الميلاد">
+            <label for="gender">الجنس:</label>
+            <select id="gender">
+                <option value="ذكر">ذكر</option>
+                <option value="انثى">انثى</option>
+            </select>
+            <br>
+            <label>رقم الهاتف التركي:</label>
+            <input type="text" id="phoneNumber" placeholder="رقم الهاتف التركي" onblur="validatePhoneNumber('phoneNumber', 'phoneNumberError')">
+            <small id="phoneNumberError" class="error">يرجى إدخال رقم هاتف صحيح.</small>
+            <label>رقم الواتس اب :</label>
+            <input type="text" id="whatsappNumber" placeholder="رقم الواتس اب" onblur="validatePhoneNumber('whatsappNumber', 'whatsappNumberError')">
+            <small id="whatsappNumberError" class="error">يرجى إدخال رقم واتساب صحيح.</small>
+            <label for="residenceLocation">موقع السكن:</label>
+            <select id="residenceLocation">
+                <option value="الجزء الأوربي">الجزء الأوربي</option>
+                <option value="الجزء الاسيوي">الجزء الاسيوي</option>
+            </select>
+            <br>
+            <label>البريد الالكتروني:</label>
+            <input type="email" id="email" placeholder="البريد الالكتروني">
+            <label>اسم الجامعة او المعهد (باللغة الإنجليزية):</label>
+            <input type="text" id="universityName" placeholder="اسم الجامعة او المعهد (باللغة الإنجليزية)">
+            <label>التخصص الجامعي باللغة الإنجليزية (اذا كنت طالب تحضيري الرجاء كتابة في خانة الجواب تحضيري):</label>
+            <input type="text" id="universityMajor" placeholder="التخصص الجامعي باللغة الإنجليزية (اذا كنت طالب تحضيري الرجاء كتابة في خانة الجواب تحضيري)">
+            <label for="universityLevel">المرحلة الجامعية:</label>
+            <select id="universityLevel">
+                <option value="تحضيري">تحضيري</option>
+                <option value="مستوى اول">مستوى اول</option>
+                <option value="مستوى ثاني">مستوى ثاني</option>
+                <option value="مستوى ثالث">مستوى ثالث</option>
+                <option value="مستوى رابع">مستوى رابع</option>
+                <option value="مستوى خامس">مستوى خامس</option>
+                <option value="سنة الامتياز (طلاب الطب)">سنة الامتياز (طلاب الطب)</option>
+                <option value="ماجستير">ماجستير</option>
+                <option value="دكتوراه">دكتوراه</option>
+                <option value="ما بعد الدكتوراه">ما بعد الدكتوراه</option>
+            </select>
+            <br>
+            <label>ارفاق الاورنجي بلقسي بصيغة PDF او صورة واضحة:</label>
+            <input type="file" id="orangeSlip" accept="application/pdf,image/*">
+            <br>
+            <label>ارفاق الهوية بصيغة PDF او صورة واضحة:</label>
+            <input type="file" id="frontId" accept="application/pdf,image/*"> بالجهة الامامية
+            <input type="file" id="backId" accept="application/pdf,image/*"> بالجهة الخلفية
+            <br>
+            <label for="declaration">هل تقر بأن البيانات أعلاه صحيحة:</label>
+            <select id="declaration">
+                <option value="نعم">نعم</option>
+                <option value="لا">لا</option>
+            </select>
+            <br>
+            <button onclick="register()">تسجيل</button>
+        </div>
+    </div>
+</body>
+</html>

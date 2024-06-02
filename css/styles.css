@@ -1,0 +1,72 @@
+/* Styles for the Membership Management Page */
+
+body {
+    font-family: Arial, sans-serif;
+    direction: rtl;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+div {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1, h2 {
+    color: #333;
+    text-align: center;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="email"],
+input[type="file"],
+select,
+button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#registrationForm {
+    margin-top: 20px;
+}
+
+#registrationForm h2 {
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+}
+
+small.error {
+    color: red;
+    display: none;
+}
+
+.alert {
+    color: red;
+    text-align: center;
+    margin: 10px 0;
+}

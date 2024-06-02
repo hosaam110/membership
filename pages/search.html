@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استعلام عن العضوية</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>استعلام عن العضوية</h1>
+        <form id="searchForm">
+            <input type="text" id="nationalId" placeholder="رقم الهوية" required>
+            <input type="date" id="birthDate" placeholder="تاريخ الميلاد" required>
+            <button type="submit">بحث</button>
+        </form>
+        <button onclick="window.location.href='../index.html'">العودة إلى الصفحة الرئيسية</button>
+        <div id="result"></div>
+    </div>
+
+    <script src="../js/scripts.js"></script>
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Simulate search logic
+            let nationalId = document.getElementById('nationalId').value;
+            let birthDate = document.getElementById('birthDate').value;
+            let resultDiv = document.getElementById('result');
+
+            // Replace with actual search logic
+            if (nationalId === '1234' && birthDate === '2000-01-01') {
+                resultDiv.innerHTML = `
+                    <p>معلومات العضوية:</p>
+                    <p>اسم: محمد أحمد</p>
+                    <p>رقم العضوية: 5678</p>
+                    <button onclick="printMembership()">طباعة العضوية</button>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <p>لم يتم العثور على العضوية</p>
+                    <button onclick="location.href='register.html'">تسجيل عضوية جديدة</button>
+                `;
+            }
+        });
+
+        function printMembership() {
+            // Simulate print logic
+            alert('Printing membership...');
+        }
+    </script>
+</body>
+</html>

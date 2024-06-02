@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تم التسجيل بنجاح</title>
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const membershipNumber = urlParams.get('membership_number');
+            document.getElementById('membershipNumber').textContent = membershipNumber;
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <h1>تم التسجيل بنجاح</h1>
+        <p>رقم العضوية المؤقت: <span id="membershipNumber"></span></p>
+        <button onclick="window.location.href='../index.html'">العودة إلى الصفحة الرئيسية</button>
+    </div>
+</body>
+</html>
